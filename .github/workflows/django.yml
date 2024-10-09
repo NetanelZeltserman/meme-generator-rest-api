@@ -42,11 +42,15 @@ jobs:
         pip install -r meme_gen/requirements.txt
 
     - name: Run migrations
+      env:
+        SECRET_KEY: ${{ secrets.SECRET_KEY }}
       run: |
         cd meme_gen
         python manage.py migrate
 
     - name: Run Tests
+      env:
+        SECRET_KEY: ${{ secrets.SECRET_KEY }}
       run: |
         cd meme_gen
         python manage.py test
