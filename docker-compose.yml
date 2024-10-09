@@ -14,11 +14,11 @@ services:
       - SECRET_KEY=django-insecure-pr+)mn--x5bwlyv2)%ka4402)$*(6$$=6%zvv5ibrxd8^(700*
       - DATABASE_URL=postgresql://meme_gen_user:meme_gen_password@postgres:5432/meme_gen_db
       - DJANGO_SUPERUSER_PASSWORD=admin
-      - DB_NAME=meme_gen_db
-      - DB_USER=meme_gen_user
-      - DB_PASSWORD=meme_gen_password
-      - DB_HOST=postgres
-      - DB_PORT=5432
+      - POSTGRES_DB=meme_gen_db
+      - POSTGRES_USER=meme_gen_user
+      - POSTGRES_PASSWORD=meme_gen_password
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
       - DEBUG=True
   postgres:
     image: postgres:17
