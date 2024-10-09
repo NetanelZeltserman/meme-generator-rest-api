@@ -41,10 +41,6 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r meme_gen/requirements.txt
 
-    - uses: harmon758/postgresql-action@v1
-      with:
-        postgresql version: '11'
-
     - name: Run migrations
       run: |
         cd meme_gen
