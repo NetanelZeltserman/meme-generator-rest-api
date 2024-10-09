@@ -86,7 +86,7 @@ DATABASES = {
         'NAME': os.environ.get('POSTGRES_DB', 'meme_gen_db'),
         'USER': os.environ.get('POSTGRES_USER', 'meme_gen_user'),
         'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'meme_gen_password'),
-        'HOST': os.environ.get('POSTGRES_HOST', 'postgres'),
+        'HOST': os.environ.get('POSTGRES_HOST', 'localhost'),
         'PORT': os.environ.get('POSTGRES_PORT', '5432'),
     }
 }
