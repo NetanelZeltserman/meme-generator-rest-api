@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  web:
+    build:
+      context: ./meme_gen
+    volumes:
+      - ./meme_gen:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+    environment:
+      - DATABASE_URL=postgresql://meme_gen_user:meme_gen_password@postgres:5432/meme_gen_db
+      - DJANGO_SUPERUSER_PASSWORD=admin
+
+  postgres:
+    image: postgres:17
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=meme_gen_db
+      - POSTGRES_USER=meme_gen_user
+      - POSTGRES_PASSWORD=meme_gen_password
+
+volumes:
+  postgres_data:
