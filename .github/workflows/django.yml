@@ -44,6 +44,7 @@ jobs:
     - name: Run migrations
       env:
         SECRET_KEY: ${{ secrets.SECRET_KEY }}
+        DB_HOST: '127.0.0.1'
       run: |
         cd meme_gen
         python manage.py migrate
@@ -51,6 +52,7 @@ jobs:
     - name: Run Tests
       env:
         SECRET_KEY: ${{ secrets.SECRET_KEY }}
+        DB_HOST: '127.0.0.1'
       run: |
         cd meme_gen
         python manage.py test
