@@ -3,7 +3,7 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 from app.views.meme_template.list import MemeTemplateList
-
+from app.views.meme.retrieve import MemeRetrieve
 from django.urls import path
 
 urlpatterns = [
@@ -11,4 +11,5 @@ urlpatterns = [
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 
     path('templates/', MemeTemplateList.as_view(), name='meme_template_list'),
+    path('memes/<int:pk>/', MemeRetrieve.as_view(), name='meme_retrieve'),
 ]
