@@ -1,5 +1,6 @@
 from rest_framework.exceptions import ValidationError as DRFValidationError
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
+from django.db.models import ObjectDoesNotExist as ModelObjectDoesNotExist
 from django.http import Http404, JsonResponse
 from typing import Dict, Tuple
 
@@ -11,6 +12,7 @@ class ExceptionsFactory:
         DRFValidationError: (400, "The given value is invalid"),
         AttributeError: (400, "The given attribute is invalid"),
         ObjectDoesNotExist: (404, "The requested model was not found"),
+        ModelObjectDoesNotExist: (404, "The requested model was not found"),
         Http404: (404, "The requested resource was not found"),
     }
 
