@@ -1,31 +1,14 @@
-from django.test import TestCase
-from django.contrib.auth.models import User
-from django.db.models import ObjectDoesNotExist
-from app.models import Meme, MemeTemplate
+from app.tests.utils import create_test_user, create_meme_templates, create_memes
 from app.repositories.meme_repository import MemeRepository
+from django.db.models import ObjectDoesNotExist
+from django.test import TestCase
+from app.models import Meme
 
 class TestMemeRepository(TestCase):
     def setUp(self):
-        self.user = User.objects.create_user(username='user', password='pass')
-        self.templates = self.create_meme_templates(3)
-        self.memes = self.create_memes(3)
-
-    def create_meme_templates(self, count):
-        return [
-            MemeTemplate.objects.create(name=f"Template {i}", image_url=f"http://example.com/template{i}.jpg")
-            for i in range(1, count + 1)
-        ]
-
-    def create_memes(self, count):
-        return [
-            Meme.objects.create(
-                template=self.templates[i],
-                top_text=f"Top {i + 1}",
-                bottom_text=f"Bottom {i + 1}",
-                created_by=self.user
-            )
-            for i in range(count)
-        ]
+        self.user = create_test_user()
+        self.templates = create_meme_templates(3)
+        self.memes = create_memes(3, self.templates[0], self.user)
 
     def test_get_random_meme_returns_meme(self):
         meme = MemeRepository.get_random_meme()
@@ -34,7 +17,7 @@ class TestMemeRepository(TestCase):
 
     def test_get_random_meme_with_single_meme(self):
         Meme.objects.all().delete()
-        single_meme = self.create_memes(1)[0]
+        single_meme = create_memes(1, self.templates[0], self.user)[0]
         
         meme = MemeRepository.get_random_meme()
         self.assertEqual(meme, single_meme)

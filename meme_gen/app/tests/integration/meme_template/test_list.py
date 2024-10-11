@@ -1,30 +1,15 @@
-from django.test import TestCase
-from django.urls import reverse
-from rest_framework import status
+from app.tests.utils import create_meme_templates
 from rest_framework.test import APIClient
 from app.models import MemeTemplate
+from rest_framework import status
+from django.test import TestCase
+from django.urls import reverse
 
 class MemeTemplateListTests(TestCase):
     def setUp(self):
         self.client = APIClient()
         self.url = reverse('meme_template_list')
-        self.create_test_meme_templates()
-
-    def create_test_meme_templates(self):
-        self.meme_templates = [
-            MemeTemplate.objects.create(
-                name="First Meme",
-                image_url="http://test.io/first_meme.jpg",
-                default_top_text="First Top txt",
-                default_bottom_text="First Bottom txt"
-            ),
-            MemeTemplate.objects.create(
-                name="Second Meme",
-                image_url="http://test.io/second_meme.jpg",
-                default_top_text="Second Top txt",
-                default_bottom_text="Second Bottom txt"
-            )
-        ]
+        self.meme_templates = create_meme_templates(2)
 
     def test_list_meme_templates(self):
         response = self.client.get(self.url)

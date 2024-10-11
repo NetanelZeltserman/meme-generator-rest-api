@@ -1,4 +1,4 @@
-from app.models import Meme, MemeTemplate, User
+from app.tests.utils import create_test_user, create_meme_template, create_meme
 from app.serializers.meme import MemeSerializer
 from rest_framework.test import APITestCase
 from django.urls import reverse
@@ -6,19 +6,9 @@ from rest_framework import status
 
 class MemeRetrieveTestCase(APITestCase):
     def setUp(self):
-        self.user = User.objects.create_user(username='testuser', password='testpass')
-        self.template = MemeTemplate.objects.create(
-            name="Test Template",
-            image_url="http://example.com/template.jpg",
-            default_top_text="Default Top",
-            default_bottom_text="Default Bottom"
-        )
-        self.meme = Meme.objects.create(
-            template=self.template,
-            top_text="Test Top Text",
-            bottom_text="Test Bottom Text",
-            created_by=self.user
-        )
+        self.user = create_test_user()
+        self.template = create_meme_template()
+        self.meme = create_meme(self.template, "Test Top Text", "Test Bottom Text", self.user)
         self.url_name = 'meme_retrieve'
         self.url = reverse(self.url_name, kwargs={'pk': self.meme.pk})
 

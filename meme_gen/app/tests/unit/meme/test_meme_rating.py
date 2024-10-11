@@ -1,20 +1,18 @@
 from rest_framework.test import APIRequestFactory, force_authenticate
 from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
-from django.contrib.auth.models import User
 from app.views.meme.rate import MemeRateView
 from unittest.mock import patch, MagicMock
-from app.models import Meme, MemeTemplate
 from rest_framework import status
 from django.test import TestCase
-
+from app.tests.utils import create_test_user, create_meme_template, create_meme
 
 class MemeRateViewTestCase(TestCase):
     def setUp(self):
         self.factory = APIRequestFactory()
-        self.user = User.objects.create_user(username='user', password='pass')
-        self.template = MemeTemplate.objects.create(name='Test Template')
-        self.meme = Meme.objects.create(template=self.template, top_text='Top', bottom_text='Bottom', created_by=self.user)
+        self.user = create_test_user()
+        self.template = create_meme_template(name='Test Template')
+        self.meme = create_meme(template=self.template, top_text='Top', bottom_text='Bottom', user=self.user)
         self.view = MemeRateView.as_view()
 
     @patch('app.views.meme.rate.MemeRateView.get_serializer')

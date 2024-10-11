@@ -1,16 +1,16 @@
-from django.test import TestCase
-from django.urls import reverse
+from app.tests.utils import create_test_user, create_meme_template, create_meme
 from rest_framework.test import APIClient
 from rest_framework import status
-from app.models import Meme, Rating, MemeTemplate
-from django.contrib.auth import get_user_model
+from django.test import TestCase
+from django.urls import reverse
+from app.models import Rating
 
 class MemeRatingIntegrationTest(TestCase):
     def setUp(self):
         self.client = APIClient()
-        self.user = get_user_model().objects.create_user(username='user', password='pass')
-        self.template = MemeTemplate.objects.create(name='Test Template')
-        self.meme = Meme.objects.create(template=self.template, top_text='Top', bottom_text='Bottom', created_by=self.user)
+        self.user = create_test_user()
+        self.template = create_meme_template()
+        self.meme = create_meme(template=self.template, top_text='Top', bottom_text='Bottom', user=self.user)
         self.url = reverse('meme_rate')
 
     def test_rate_meme_authenticated(self):

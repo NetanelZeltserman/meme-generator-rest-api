@@ -1,21 +1,18 @@
 from django.http import QueryDict
 from django.test import TestCase
-from django.contrib.auth import get_user_model
-from django.test import TestCase
 from rest_framework.test import APIRequestFactory, force_authenticate
 from rest_framework import status
 from unittest.mock import patch, MagicMock
 from app.views.meme.list_and_create import MemeListCreateView
 from app.serializers.meme import MemeSerializer, MemeCreateSerializer
-from rest_framework.test import force_authenticate
-
-User = get_user_model()
+from app.tests.utils import create_test_user, create_meme_template
 
 class MemeListCreateViewTestCase(TestCase):
     def setUp(self):
         self.factory = APIRequestFactory()
         self.view = MemeListCreateView.as_view()
-        self.user = User.objects.create_user(username='testuser', password='testpass')
+        self.user = create_test_user()
+        self.template = create_meme_template()
 
     def test_get_serializer_class_list(self):
         view = MemeListCreateView()
@@ -29,7 +26,7 @@ class MemeListCreateViewTestCase(TestCase):
 
     @patch('app.views.meme.list_and_create.MemeListCreateView.get_serializer')
     def test_create(self, mock_get_serializer):
-        request_data = QueryDict('template_id=1')
+        request_data = QueryDict(f'template_id={self.template.id}')
         request = self.factory.post('/', data=request_data)
         request.user = self.user
         force_authenticate(request, user=self.user)

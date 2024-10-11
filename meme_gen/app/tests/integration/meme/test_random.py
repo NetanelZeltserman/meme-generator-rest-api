@@ -1,3 +1,4 @@
+from app.tests.utils import create_meme, create_memes
 from app.models import Meme, MemeTemplate, User
 from app.serializers.meme import MemeSerializer
 from rest_framework.test import APITestCase
@@ -13,7 +14,7 @@ class MemeRandomTestCase(APITestCase):
             default_top_text="Default Top",
             default_bottom_text="Default Bottom"
         )
-        self.memes = self.create_test_memes(5)
+        self.memes = create_memes(5, self.template, self.user)
         self.url_name = 'meme_random'
         self.url = reverse(self.url_name)
 
@@ -24,9 +25,6 @@ class MemeRandomTestCase(APITestCase):
             bottom_text=bottom_text,
             created_by=self.user
         )
-    
-    def create_test_memes(self, count):
-        return [self.create_meme(f'Test Top {i}', f'Test Bottom {i}') for i in range(count)]
 
     def test_retrieve_existing_meme(self):
         self.client.force_authenticate(user=self.user)

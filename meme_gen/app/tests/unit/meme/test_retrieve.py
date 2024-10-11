@@ -1,31 +1,22 @@
 from rest_framework.test import APIRequestFactory, force_authenticate
 from rest_framework import status
 from django.test import TestCase
-from django.contrib.auth.models import User
 from django.urls import reverse
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 from app.views.meme.retrieve import MemeRetrieve
 from app.serializers.meme import MemeSerializer
-from app.models import Meme, MemeTemplate
+from app.models import Meme
 from django.http import Http404, JsonResponse
 import json
+from app.tests.utils import create_test_user, create_meme_template, create_meme
 
 class TestMemeRetrieve(TestCase):
     def setUp(self):
         self.factory = APIRequestFactory()
-        self.user = User.objects.create_user(username='test_username', password='test_pass')
-        self.meme = self.create_mock_meme()
+        self.user = create_test_user()
+        self.template = create_meme_template()
+        self.meme = create_meme(self.template, "Top Text", "Bottom Text", self.user)
         self.url = reverse('meme_retrieve', kwargs={'pk': self.meme.id})
-
-    @staticmethod
-    def create_mock_meme():
-        meme = MagicMock(spec=Meme)
-        meme.id = 1
-        meme.template = MagicMock(spec=MemeTemplate)
-        meme.top_text = "Top Text"
-        meme.bottom_text = "Bottom Text"
-        meme.created_by = User.objects.first()
-        return meme
 
     def test_retrieve_meme_success(self):
         request = self.factory.get(self.url)

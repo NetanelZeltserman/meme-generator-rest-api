@@ -1,6 +1,6 @@
-from django.contrib.auth.models import User
+from app.tests.utils import create_test_user, create_meme_template, create_memes
 from rest_framework.test import APIClient
-from app.models import Meme, MemeTemplate
+from app.models import Meme
 from rest_framework import status
 from django.urls import reverse
 from django.test import TestCase
@@ -8,23 +8,14 @@ from django.test import TestCase
 class MemeListCreateViewTests(TestCase):
     def setUp(self):
         self.client = APIClient()
-        self.user = User.objects.create_user(username='test_user', password='test_password')
+        self.user = create_test_user()
         self.client.force_authenticate(user=self.user)
 
-        self.template = MemeTemplate.objects.create(name='Test Template', default_top_text='Top', default_bottom_text='Bottom')
+        self.template = create_meme_template()
         self.meme_list_url = reverse('meme_list_create')
 
-    def create_meme(self, top_text='Test Top', bottom_text='Test Bottom'):
-        return Meme.objects.create(
-            template=self.template,
-            top_text=top_text,
-            bottom_text=bottom_text,
-            created_by=self.user
-        )
-
     def test_list_memes(self):
-        self.create_meme()
-        self.create_meme('Another Top', 'Another Bottom')
+        create_memes(2, self.template, self.user)
 
         response = self.client.get(self.meme_list_url)
 
@@ -35,8 +26,8 @@ class MemeListCreateViewTests(TestCase):
         for i, meme in enumerate(received_memes):
             self.assertEqual(meme['template'], self.template.id)
             self.assertEqual(meme['created_by'], self.user.id)
-            self.assertEqual(meme['top_text'], 'Test Top' if i == 0 else 'Another Top')
-            self.assertEqual(meme['bottom_text'], 'Test Bottom' if i == 0 else 'Another Bottom')
+            self.assertEqual(meme['top_text'], f'Test Top {i}')
+            self.assertEqual(meme['bottom_text'], f'Test Bottom {i}')
 
     def test_create_meme(self):
         meme_data = {
@@ -61,8 +52,8 @@ class MemeListCreateViewTests(TestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Meme.objects.count(), 1)
         created_meme = Meme.objects.first()
-        self.assertEqual(created_meme.top_text, 'Top')
-        self.assertEqual(created_meme.bottom_text, 'Bottom')
+        self.assertEqual(created_meme.top_text, self.template.default_top_text)
+        self.assertEqual(created_meme.bottom_text, self.template.default_bottom_text)
 
     def test_create_meme_with_invalid_template(self):
         meme_data = {
@@ -134,8 +125,7 @@ class MemeListCreateViewTests(TestCase):
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def test_list_memes_pagination(self):
-        for i in range(15):
-            self.create_meme(f'Top {i}', f'Bottom {i}')
+        create_memes(15, self.template, self.user)
 
         response = self.client.get(self.meme_list_url)
         
