@@ -1,5 +1,4 @@
-from django.db.models import ObjectDoesNotExist
-from django.db.models import Count
+from django.db.models import ObjectDoesNotExist, Count, Avg
 from app.models import Meme
 from random import randint
 
@@ -14,3 +13,14 @@ class MemeRepository:
 
         random_index = randint(0, meme_count - 1)
         return Meme.objects.all()[random_index]
+
+    @staticmethod
+    def get_top_rated_memes(limit=10):
+        top_memes = Meme.objects.annotate(
+            avg_rating=Avg('ratings__score')
+        ).order_by('-avg_rating')[:limit]
+        
+        if not top_memes:
+            raise ObjectDoesNotExist("No memes found.")
+        
+        return top_memes
