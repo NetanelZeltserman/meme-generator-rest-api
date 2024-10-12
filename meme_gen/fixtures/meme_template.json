@@ -1,0 +1,42 @@
+[
+  {
+    "model": "app.memetemplate",
+    "pk": 1,
+    "fields": {
+      "name": "Drake Hotline Bling",
+      "image_url": "https://www.memesportal.com/wp-content/uploads/2021/04/Drake-Hotline-Bling.jpg",
+      "default_top_text": "",
+      "default_bottom_text": ""
+    }
+  },
+  {
+    "model": "app.memetemplate",
+    "pk": 2,
+    "fields": {
+      "name": "Two Buttons",
+      "image_url": "https://www.meme-arsenal.com/memes/47cfeac12742b4c6b18a78638d9c1c49.jpg",
+      "default_top_text": "",
+      "default_bottom_text": ""
+    }
+  },
+  {
+    "model": "app.memetemplate",
+    "pk": 3,
+    "fields": {
+      "name": "Change My Mind",
+      "image_url": "https://i.imgflip.com/4t85g9.png",
+      "default_top_text": "",
+      "default_bottom_text": "Change my mind"
+    }
+  },
+  {
+    "model": "app.memetemplate",
+    "pk": 4,
+    "fields": {
+      "name": "Mocking Spongebob",
+      "image_url": "https://cdn.mobilesyrup.com/wp-content/uploads/2019/01/mocking-spongebob.jpg",
+      "default_top_text": "",
+      "default_bottom_text": ""
+    }
+  }
+]

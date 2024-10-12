@@ -22,3 +22,12 @@ class Rating(models.Model):
 
     class Meta:
         unique_together = ('meme', 'user')
+
+class FunnyTemplatePhrases(models.Model):
+    template = models.ForeignKey(MemeTemplate, on_delete=models.CASCADE, related_name='phrases')
+    top_phrase = models.CharField(max_length=200)
+    bottom_phrase = models.CharField(max_length=200)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.template.name} - {self.top_phrase[:20]}... | {self.bottom_phrase[:20]}..."

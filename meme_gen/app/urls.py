@@ -2,6 +2,7 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
+from app.views.meme.surprise_me import MemeSurpriseMeView
 from app.views.meme.list_and_create import MemeListCreateView
 from app.views.meme.random import MemeRandomView
 from app.views.meme_template.list import MemeTemplateList
@@ -22,4 +23,8 @@ urlpatterns = [
     path('memes/rate/', MemeRateView.as_view(), name='meme_rate'),
     path('memes/random/', MemeRandomView.as_view(), name='meme_random'),
     path('memes/top/', MemeTopTenRatedView.as_view(), name='meme_top_ten_rated'),
+
+    # Bonus
+    path('memes/surprise-me/', MemeSurpriseMeView.as_view(), name='meme_surprise_me'),
+    path('memes/surprise-me/<int:template_id>/', MemeSurpriseMeView.as_view(), name='meme_surprise_me_with_template'),
 ]

@@ -1,4 +1,4 @@
-from app.models import Meme, MemeTemplate, User
+from app.models import Meme, MemeTemplate, User, FunnyTemplatePhrases
 import random
 
 def create_test_user(username='testuser', password='testpass'):
@@ -49,4 +49,20 @@ def create_memes(count, template, user, memes_attributes=None):
             user=user,
         )
         for i in range(count)
+    ]
+
+def create_funny_template_phrases(template, top_phrase="Funny Top", bottom_phrase="Funny Bottom"):
+    return FunnyTemplatePhrases.objects.create(
+        template=template,
+        top_phrase=top_phrase,
+        bottom_phrase=bottom_phrase
+    )
+
+def create_funny_template_phrases_list(template, count):
+    return [
+        create_funny_template_phrases(
+            template,
+            top_phrase=f"Funny Top {i}",
+            bottom_phrase=f"Funny Bottom {i}"
+        ) for i in range(1, count + 1)
     ]
