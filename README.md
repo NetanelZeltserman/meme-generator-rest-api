@@ -27,7 +27,7 @@ Swagger & ReDoc support (bonus)
 - Include raw JSON schema file download endpoint for API specification
 
 Auto. Camel case transformer (bonus)
-- for API serialization in API responses
+- For API serialization in API responses
 
 Serializers
 - Input validation
@@ -78,6 +78,51 @@ Here's a list of available endpoints and their functions:
 - `GET /api/memes/top/` - Get top 10 rated memes
 - `GET /api/memes/surprise-me/` - Get a meme with random text from a list of funny phrases (includes image URL)
 - `GET /api/memes/surprise-me/<template_id>/` - Get a meme with random text from a list of funny phrases, related to a specific template (includes image URL)
+
+## Project Structure
+
+meme_gen/
+├── .github/
+│ └── workflows/
+│ └── django.yml
+├── app/
+│ ├── migrations/
+│ │ ├── 0001_initial.py
+│ │ └── 0002_funnytemplatephrases.py
+│ ├── tests/
+│ │ ├── integration/
+│ │ │ ├── meme/
+│ │ │ ├── meme_template/
+│ │ │ └── repositories/
+│ │ └── unit/
+│ │ ├── meme/
+│ │ ├── meme_template/
+│ │ ├── repositories/
+│ │ └── services/
+│ ├── views/
+│ │ └── meme/
+│ ├── init.py
+│ ├── admin.py
+│ ├── models.py
+│ └── tests.py
+├── fixtures/
+│ ├── funny_template_phrases.json
+│ └── meme_template.json
+├── meme_gen/
+│ ├── init.py
+│ ├── settings.py
+│ ├── urls.py
+│ └── wsgi.py
+├── uploads/
+│ └── memes/
+│ └── .gitkeep
+├── .gitignore
+├── Dockerfile
+├── README.md
+├── docker-compose.yml
+├── entrypoint.sh
+├── manage.py
+└── requirements.txt
 
 ## Additional Notes
 
