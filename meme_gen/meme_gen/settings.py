@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'app',
     'rest_framework',
     'rest_framework_simplejwt',
+    'drf_spectacular',
 ]
 
 MIDDLEWARE = [
@@ -158,4 +159,12 @@ REST_FRAMEWORK = {
         'djangorestframework_camel_case.parser.CamelCaseJSONParser',
         # Any other parsers
     ),
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Meme Generator API',
+    'DESCRIPTION': 'Using DRF and PostgreSQL',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
 }
