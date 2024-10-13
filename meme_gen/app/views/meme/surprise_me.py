@@ -1,3 +1,4 @@
+from app.services.image_generator.funny_phrases_meme_image import FunnyPhrasesMemeImageGenerator
 from app.repositories.funny_template_phrases_repository import FunnyTemplatePhrasesRepository
 from app.serializers.funny_template_phrases import FunnyTemplatePhrasesSerializer
 from rest_framework.permissions import IsAuthenticated
@@ -12,9 +13,12 @@ class MemeSurpriseMeView(generics.RetrieveAPIView):
     def retrieve(self, request, template_id=None):
         try:
             surprise_phrase = FunnyTemplatePhrasesRepository.get_random_funny_template_phrase(template_id)
+            img_url = FunnyPhrasesMemeImageGenerator().get_image(surprise_phrase)
 
-            serializer = self.get_serializer(surprise_phrase)
-            return Response(serializer.data)
+            response_data = self.get_serializer(surprise_phrase).data
+            response_data['image_url'] = img_url
+
+            return Response(response_data)
 
         except Exception as e:
             return ExceptionsFactory.handle(e)
