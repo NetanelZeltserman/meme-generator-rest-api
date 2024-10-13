@@ -81,6 +81,7 @@ Here's a list of available endpoints and their functions:
 
 ## Project Structure
 
+```
 meme_gen/
 ├── .github/
 │ └── workflows/
@@ -123,7 +124,7 @@ meme_gen/
 ├── entrypoint.sh
 ├── manage.py
 └── requirements.txt
-
+```
 ## Additional Notes
 
 1. Authentication:
