@@ -22,6 +22,13 @@ Seed data (bonus)
 - Meme templates
 - Funny phrases for the surprise me feature
 
+Swagger & ReDoc support (bonus)
+- Add Swagger & ReDoc UI for interactive API exploration
+- Include raw JSON schema file download endpoint for API specification
+
+Auto. Camel case transformer (bonus)
+- for API serialization in API responses
+
 Serializers
 - Input validation
 - Model creation & update
