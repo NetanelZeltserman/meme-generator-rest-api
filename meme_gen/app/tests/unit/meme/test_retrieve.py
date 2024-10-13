@@ -3,7 +3,7 @@ from rest_framework import status
 from django.test import TestCase
 from django.urls import reverse
 from unittest.mock import patch
-from app.views.meme.retrieve import MemeRetrieve
+from app.views.meme.retrieve import MemeRetrieveView
 from app.serializers.meme import MemeSerializer
 from app.models import Meme
 from django.http import Http404, JsonResponse
@@ -22,15 +22,15 @@ class TestMemeRetrieve(TestCase):
         request = self.factory.get(self.url)
         force_authenticate(request, user=self.user)
 
-        with patch.object(MemeRetrieve, 'get_object', return_value=self.meme):
-            response = MemeRetrieve.as_view()(request, pk=self.meme.id)
+        with patch.object(MemeRetrieveView, 'get_object', return_value=self.meme):
+            response = MemeRetrieveView.as_view()(request, pk=self.meme.id)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data, MemeSerializer(self.meme).data)
 
     def test_retrieve_nonexistent_meme(self):
         with patch('app.views.meme.retrieve.Meme.objects.get', side_effect=Meme.DoesNotExist):
-            view = MemeRetrieve()
+            view = MemeRetrieveView()
             view.kwargs = {'pk': 9999}
             with self.assertRaises(Http404):
                 view.retrieve(self.factory.get(self.url))
@@ -41,8 +41,8 @@ class TestMemeRetrieve(TestCase):
         force_authenticate(request, user=self.user)
 
         with patch('app.views.meme.retrieve.ExceptionsFactory.handle', return_value=error_response), \
-             patch.object(MemeRetrieve, 'get_object', side_effect=Http404("Test exception")):
-            response = MemeRetrieve.as_view()(request, pk=self.meme.id)
+             patch.object(MemeRetrieveView, 'get_object', side_effect=Http404("Test exception")):
+            response = MemeRetrieveView.as_view()(request, pk=self.meme.id)
 
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
         self.assertEqual(json.loads(response.content), {'error': 'Test error'})

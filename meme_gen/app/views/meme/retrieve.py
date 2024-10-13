@@ -3,7 +3,7 @@ from app.exceptions.factory import ExceptionsFactory
 from app.serializers.meme import MemeSerializer
 from rest_framework import generics, mixins
 from app.models import Meme
-class MemeRetrieve(mixins.RetrieveModelMixin,
+class MemeRetrieveView(mixins.RetrieveModelMixin,
                  generics.GenericAPIView):
     queryset = Meme.objects.all()
     serializer_class = MemeSerializer
